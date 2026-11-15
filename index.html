@@ -1,0 +1,961 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#EDE3C8">
+<meta name="description" content="Интерактивный конспект по механической энергии для 10 класса. Теория, физические модели, разбор задач и практика.">
+<title>Сохранение энергии · Физика, 10 класс</title>
+<style>
+:root {
+  --navy:#1B2A3D; --cream:#EDE3C8; --wine:#5C1F2E;
+  --paper:#fcfaf4; --white:#fffdf8; --blue:#a7c0d5; --gold:#dfbd80;
+  --ink:#1b2a3d; --muted:#526071; --line:#ded7c7; --hero-line:#d3c9b0;
+  --serif:Georgia,"PT Serif",serif; --sans:Arial,"Helvetica Neue",sans-serif;
+  --mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:16px/1.55 var(--sans);background:var(--paper)}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:inherit}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #356687;outline-offset:4px}
+[hidden]{display:none!important}
+.wrap{width:min(100% - 104px,1280px);margin-inline:auto}
+.skip{position:fixed;z-index:10;left:10px;top:10px;transform:translateY(-150%);background:var(--white);padding:10px}
+.skip:focus{transform:translateY(0)}
+.site-header{background:var(--white);border-bottom:1px solid var(--line)}
+.header-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{display:inline-flex;align-items:center;gap:11px;font-size:17px;font-weight:700;text-decoration:none;white-space:nowrap}
+.brand-mark{height:34px;width:34px;display:grid;place-items:center;background:var(--wine);color:var(--cream);border-radius:7px;font:italic 23px var(--serif)}
+.nav{display:flex;align-items:center;gap:4px}
+.nav a{display:flex;align-items:center;justify-content:center;min-height:40px;padding:6px 15px;border-radius:5px;text-decoration:none;font-size:14px;font-weight:700;color:var(--muted);white-space:nowrap}
+.nav a:hover{background:#f5efe2;color:var(--wine)}
+.nav a[aria-current]{color:var(--wine);background:#f0e8d6}
+.grade,.eyebrow,.chapter-index,.card-number,.scene-label,.kicker{font:700 11px/1.3 var(--mono);letter-spacing:.13em;text-transform:uppercase}
+.grade{white-space:nowrap;color:var(--wine);border:1px solid var(--line);padding:6px 9px;border-radius:4px}
+.hero{background:var(--cream);border-bottom:1px solid var(--hero-line)}
+.hero-inner{display:grid;grid-template-columns:.94fr 1.06fr;align-items:center;gap:72px;padding-block:60px 59px}
+.eyebrow{color:var(--wine);margin:0 0 22px;display:flex;align-items:center;gap:12px}
+.eyebrow:before{content:"";width:22px;height:1px;background:currentColor;flex:none}
+h1,h2,h3,p{margin-top:0}
+h1,h2,.exercise-title{font-family:var(--serif);font-weight:400}
+h1{font-size:clamp(56px,6.25vw,98px);line-height:.99;letter-spacing:-.066em;margin-bottom:24px}
+h1 em{font-weight:400;color:var(--wine)}
+.hero-copy>p:not(.eyebrow){max-width:455px;color:#374658;font-size:17px;line-height:1.65;margin-bottom:27px}
+.hero-actions,.scene-controls,.step-actions{display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:10px;border:1px solid transparent;border-radius:5px;min-height:44px;padding:10px 15px;font-size:14px;font-weight:700;text-decoration:none;line-height:1.25;background:transparent;color:inherit}
+.button.primary{background:var(--wine);color:var(--white)}
+.button.primary:hover{background:#743144}
+.button.outline{border-color:#b4a78c;color:var(--wine)}
+.button.outline:hover,.button.light:hover{background:#efe5d2}
+.button.light{border-color:var(--line);background:var(--white)}
+.button:disabled{cursor:default;opacity:.46}
+.scene{border-radius:10px;overflow:hidden;background:var(--navy);color:var(--cream);border:1px solid #2b4055;box-shadow:0 14px 30px #26324420}
+.scene-head{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 18px;border-bottom:1px solid #ffffff21}
+.scene-label{color:var(--cream);letter-spacing:.1em;display:flex;align-items:center;gap:8px}
+.scene-label:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold)}
+.scene-tag{font:11px var(--mono);color:#becbd6;text-align:right}
+canvas{display:block;width:100%;height:clamp(225px,23vw,324px);background:var(--navy)}
+.energy-panel{padding:12px 17px 14px;border-top:1px solid #ffffff21}
+.energy-bar{height:6px;display:flex;border-radius:2px;overflow:hidden;background:#48576a}
+.energy-bar span:first-child{background:var(--blue)}
+.energy-bar span:last-child{background:var(--gold)}
+.energy-legend{display:grid;grid-template-columns:1fr 1fr auto;gap:9px;margin-top:10px;align-items:center;font:11px/1.3 var(--mono);color:#dbe4ec}
+.energy-legend span{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.energy-legend span:before{content:"";width:7px;height:7px;background:var(--blue);border-radius:50%;flex:none}
+.energy-legend span:nth-child(2):before{background:var(--gold)}
+.energy-legend span:last-child:before{display:none}
+.energy-legend span:last-child{color:var(--cream)}
+.energy-legend strong{font-weight:700;font-variant-numeric:tabular-nums}
+.scene-controls{padding:9px 15px;border-top:1px solid #ffffff21;flex-wrap:nowrap;gap:10px}
+.scene-controls button{flex:none;color:var(--cream);border:1px solid #ffffff36;background:#ffffff08;border-radius:4px;min-height:36px;min-width:39px;padding:5px 9px;font-size:13px}
+.scene-controls button:hover{background:#ffffff1c}
+.scene-controls input{flex:1;min-width:0}
+input[type=range]{accent-color:var(--wine);width:100%;cursor:pointer}
+.scene-controls input{accent-color:var(--gold)}
+.scene-controls .phase{color:#d7e1e9;text-align:right;min-width:36px;font:11px var(--mono)}
+.chapter{padding-block:45px 52px}
+.chapter-heading{display:flex;gap:24px;align-items:end;justify-content:space-between;margin-bottom:24px}
+.chapter-index,.card-number,.kicker{color:var(--wine);margin-bottom:9px}
+.chapter h2,.page-head h1{margin:0;font-size:clamp(39px,5vw,62px);letter-spacing:-.055em;line-height:1.06}
+.chapter-note{color:var(--muted);font-size:14px;margin:0 0 4px}
+.topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
+.topic{padding:20px 22px 22px;background:var(--white);border:1px solid var(--line);border-radius:7px;min-width:0}
+.topic h3{font-size:19px;line-height:1.2;margin:9px 0 10px}
+.topic p{font-size:14px;color:#445062;margin-bottom:12px}
+.topic p:last-child{margin-bottom:0}
+.topic .formula{padding:9px 12px;background:#f0eadb;border-radius:4px;margin-bottom:12px}
+.formula{font:italic 24px/1.35 var(--serif);color:var(--wine);overflow-wrap:anywhere}
+.formula sub{font-size:.64em}
+.topic[data-tone=blue]{border-top:3px solid #6c90ad}
+.topic[data-tone=gold]{border-top:3px solid #b1955f}
+.topic[data-tone=wine]{border-top:3px solid var(--wine)}
+.study-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
+.study{border-top:1px solid var(--line);padding:22px 10px 0 0}
+.study h3{font-size:19px;margin-bottom:10px}
+.study p,.study li{font-size:15px;color:#445062}
+.study ol{padding-left:20px;margin:0}
+.study p:last-child{margin-bottom:0}
+.next-section{display:flex;justify-content:space-between;align-items:center;gap:16px;border-top:1px solid var(--line);padding:22px 0 30px}
+.next-section a{margin-left:auto}
+.site-footer{border-top:1px solid var(--line);padding-block:19px;color:var(--muted);font-size:13px}
+.site-footer .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.page-head{background:var(--cream);border-bottom:1px solid var(--hero-line);padding-block:36px 34px}
+.page-head .eyebrow{margin-bottom:11px}
+.page-head p:last-child{margin:11px 0 0;color:#374658;max-width:65ch}
+.workspace{padding-block:26px 46px}
+.switcher{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.switcher button{background:var(--white);border:1px solid var(--line);border-radius:5px;color:var(--ink);padding:8px 13px;min-height:44px;font-size:14px;font-weight:700;text-align:left}
+.switcher button:hover{border-color:#a09376}
+.switcher button[aria-pressed=true]{background:var(--wine);border-color:var(--wine);color:var(--white)}
+.switcher small{font:11px var(--mono);margin-right:6px}
+.work-grid{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(0,.84fr);gap:20px;align-items:start}
+.paper-card{border:1px solid var(--line);border-radius:8px;background:var(--white);padding:23px 24px;min-width:0}
+.exercise-title{font-size:clamp(28px,4vw,41px);line-height:1.08;letter-spacing:-.04em;margin:0 0 12px}
+.paper-card p{font-size:15px}
+.paper-card p:last-child{margin-bottom:0}
+.compact{color:var(--muted)}
+.control-label{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:15px 0 2px;font-size:14px;font-weight:700}
+.control-label output{color:var(--wine);font-family:var(--mono)}
+.measurements{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 13px}
+.measurements div{background:#f2ecdf;border-radius:4px;padding:8px 10px}
+.measurements dt{font-size:12px;color:var(--muted)}
+.measurements dd{margin:0;font:700 15px/1.5 var(--mono)}
+.lab-tip{border-top:1px solid var(--line);padding-top:12px;color:#445062}
+.tasks-grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+.tasks-grid .paper-card{min-height:270px}
+.tasks-grid .scene-label:before{background:var(--blue)}
+.problem-data{display:flex;gap:6px;flex-wrap:wrap;margin:15px 0 17px}
+.problem-data span{font:13px var(--mono);color:var(--wine);background:#f0eadb;border-radius:4px;padding:6px 8px}
+.solution{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.step-tabs{display:flex;gap:5px;margin-bottom:13px}
+.step-tabs button{height:38px;min-width:38px;border:1px solid var(--line);border-radius:4px;background:var(--paper);color:var(--wine);font:700 13px var(--mono)}
+.step-tabs button[aria-pressed=true]{background:var(--wine);color:var(--white);border-color:var(--wine)}
+.step-card{padding:12px 13px;margin-bottom:12px;border-left:3px solid #ad9060;background:#f4eee0;border-radius:3px;min-height:115px}
+.step-card.reveal{animation:reveal .28s ease-out}
+.step-card h3{font-size:15px;margin:0 0 4px}
+.step-card p{margin:0 0 5px}
+.step-card .formula{font-size:20px}
+@keyframes reveal{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:none}}
+.problem-caption{padding:12px 15px;border-top:1px solid #ffffff21;color:#dbe4ec;font-size:13px;min-height:48px}
+.solution-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px}
+.solution-actions .button,.step-actions .button{min-height:40px}
+.source{margin:18px 0 0;color:var(--muted);font-size:13px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+@media(max-width:1100px){.wrap{width:calc(100% - 64px)}.hero-inner{gap:36px}.hero-copy>p:not(.eyebrow){font-size:16px}}
+@media(max-width:850px){.wrap{width:calc(100% - 42px)}.header-inner{gap:10px}.nav a{padding-inline:8px}.hero-inner{gap:23px;padding-block:38px}.hero h1{font-size:clamp(48px,7.5vw,70px)}.topic{padding-inline:14px}.work-grid{gap:13px}.paper-card{padding:18px}.energy-panel{padding-inline:11px}.energy-legend{font-size:10px}}
+@media(max-width:690px){.wrap{width:calc(100% - 32px)}.header-inner{display:grid;grid-template-columns:1fr auto;padding:10px 0 5px;gap:5px}.grade{grid-column:2;grid-row:1}.nav{grid-column:1/-1;justify-content:space-between;gap:1px}.nav a{min-height:44px;font-size:12px;padding-inline:7px}.hero-inner,.work-grid{grid-template-columns:1fr}.hero-inner{padding-block:30px;gap:22px}.hero h1{font-size:clamp(48px,11vw,72px);margin-bottom:13px}.hero-copy>p:not(.eyebrow){margin-bottom:17px}.eyebrow{margin-bottom:13px}.chapter{padding-block:30px}.chapter-heading{display:block;margin-bottom:16px}.chapter-note{margin-top:7px}.topic-grid,.study-grid{grid-template-columns:1fr;gap:10px}.topic{padding:15px}.study{padding-top:13px}.next-section{padding-bottom:22px}.page-head{padding-block:24px}.workspace{padding-block:16px 30px}.switcher{gap:5px;margin-bottom:12px}.switcher button{padding:7px 9px;font-size:12px}.switcher small{margin-right:3px}.tasks-grid .paper-card{display:contents}.task-intro,.tasks-grid .solution{border:1px solid var(--line);border-radius:8px;background:var(--white);padding:16px}.tasks-grid .solution{order:3;margin:0}.task-scene{order:2}.lab-grid .scene{grid-row:2}.scene-head{padding-inline:12px}.scene-label{font-size:10px}.scene-tag{font-size:10px}}
+@media(max-width:350px){.wrap{width:calc(100% - 24px)}.nav a{padding-inline:5px}.hero-actions{gap:6px}.hero-actions .button{padding-inline:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip">К содержанию</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="#theory" class="brand"><span class="brand-mark" aria-hidden="true">E</span> Физика</a>
+    <nav class="nav" aria-label="Разделы учебника">
+      <a href="#theory" aria-current="page">Теория</a><a href="#lab">Лаборатория</a><a href="#worked">Разбор задач</a><a href="#practice">Практика</a>
+    </nav>
+    <span class="grade">10 класс</span>
+  </div>
+</header>
+<main id="main" tabindex="-1">
+  <section data-page="theory" aria-labelledby="theory-title">
+    <div class="hero">
+      <div class="wrap hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow">Механика</p>
+          <h1 id="theory-title">Сохранение<br><em>энергии</em></h1>
+          <p>Как высота превращается в скорость и почему у идеального маятника сумма энергий остаётся постоянной.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#chapter">Читать конспект <span aria-hidden="true">↓</span></a>
+            <a class="button outline" href="#lab">В лабораторию <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+        <div id="hero-scene"></div>
+      </div>
+    </div>
+    <section class="wrap chapter" id="chapter" aria-labelledby="chapter-title">
+      <div class="chapter-heading">
+        <div><div class="chapter-index">Конспект</div><h2 id="chapter-title">Три ключевые формулы</h2></div>
+        <p class="chapter-note">Энергия и работа измеряются в джоулях (Дж).</p>
+      </div>
+      <div class="topic-grid">
+        <article class="topic" data-tone="blue">
+          <h3>Кинетическая энергия</h3>
+          <div class="formula" aria-label="Кинетическая энергия равна эм вэ квадрат пополам">E<sub>к</sub> = mv² / 2</div>
+          <p>Энергия движения. Здесь <i>m</i> — масса (кг), <i>v</i> — модуль скорости (м/с). При удвоении скорости энергия растёт в четыре раза.</p>
+          <p>Работа равнодействующей сил равна изменению кинетической энергии: <b>A = E<sub>к2</sub> − E<sub>к1</sub></b>.</p>
+        </article>
+        <article class="topic" data-tone="gold">
+          <h3>Потенциальная энергия</h3>
+          <div class="formula">E<sub>п</sub> = mgh</div>
+          <p>Энергия взаимодействия. Вблизи Земли <i>h</i> — высота над выбранным нулевым уровнем, <i>g</i> ≈ 9,8 м/с².</p>
+          <p>У идеальной пружины <b>E<sub>п</sub> = kx² / 2</b>, где <i>k</i> — жёсткость (Н/м), <i>x</i> — удлинение или сжатие (м).</p>
+        </article>
+        <article class="topic" data-tone="wine">
+          <h3>Механическая энергия</h3>
+          <div class="formula">E<sub>к1</sub> + E<sub>п1</sub> = E<sub>к2</sub> + E<sub>п2</sub></div>
+          <p>Если работу совершают только сила тяжести и сила упругости, сумма <b>E = E<sub>к</sub> + E<sub>п</sub></b> сохраняется.</p>
+          <p>При трении часть механической энергии переходит во внутреннюю. Полная энергия изолированной системы сохраняется.</p>
+        </article>
+      </div>
+      <div class="study-grid">
+        <article class="study"><h3>Работа силы тяжести</h3><p><b>A<sub>тяж</sub> = mg(h<sub>1</sub> − h<sub>2</sub>) = −ΔE<sub>п</sub>.</b> При подъёме работа отрицательна, при спуске положительна. Если тело возвращается на исходную высоту, суммарная работа тяжести равна нулю.</p></article>
+        <article class="study"><h3>С чего начать решение</h3><ol><li>Перевести величины в СИ и выбрать нулевую высоту.</li><li>Отметить начальное и конечное состояния тела.</li><li>Определить, какие силы совершают работу, и выбрать формулу.</li></ol></article>
+      </div>
+    </section>
+    <div class="wrap next-section"><a class="button outline" href="#worked">К разбору задач <span aria-hidden="true">→</span></a></div>
+  </section>
+  <section data-page="lab" aria-labelledby="lab-title" hidden>
+    <div class="page-head"><div class="wrap"><p class="eyebrow">Эксперименты</p><h1 id="lab-title">Лаборатория</h1><p>Запусти модель или передвинь ползунок. Сравни энергии в разных точках движения.</p></div></div>
+    <div class="wrap workspace">
+      <div class="switcher" id="lab-switch" role="group" aria-label="Выбор модели"></div>
+      <div class="work-grid lab-grid">
+        <div id="lab-scene"></div>
+        <article class="paper-card" id="lab-info"></article>
+      </div>
+    </div>
+  </section>
+  <section data-page="worked" aria-labelledby="worked-title" hidden>
+    <div class="page-head"><div class="wrap"><p class="eyebrow">Задачи из сборника</p><h1 id="worked-title">Разбор задач</h1><p>Четыре задачи со страниц 50–51. Каждый шаг решения связан с точкой на схеме.</p></div></div>
+    <div class="wrap workspace" id="worked-workspace"></div>
+  </section>
+  <section data-page="practice" aria-labelledby="practice-title" hidden>
+    <div class="page-head"><div class="wrap"><p class="eyebrow">Самостоятельная работа</p><h1 id="practice-title">Практика</h1><p>Реши четыре аналогичные задачи. Сверь ход решения и ответ, когда будешь готов.</p></div></div>
+    <div class="wrap workspace" id="practice-workspace"></div>
+  </section>
+</main>
+<footer class="site-footer"><div class="wrap"><span>Физика · 10 класс</span><span>Механическая работа и энергия</span></div></footer>
+<script>
+"use strict";
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+const formatters = [0, 1, 2].map(digits => new Intl.NumberFormat("ru-RU", {maximumFractionDigits: digits}));
+const format = (value, digits = 2) => formatters[digits].format(Math.abs(value) < .000001 ? 0 : value);
+const clamp = (value, low = 0, high = 1) => Math.max(low, Math.min(high, value));
+const tau = Math.PI * 2;
+const palette = {navy:"#1B2A3D", cream:"#EDE3C8", blue:"#a7c0d5", gold:"#dfbd80", pale:"#dbe4ec", dim:"#8298af", grid:"#31475c", dark:"#101e2e"};
+const sceneTemplate = (name, tag, accessibleName, {energy = false, controls = true} = {}) => {
+  const sliders = controls ? `<div class="scene-controls">
+    <button type="button" class="play" aria-label="Запустить анимацию"><span aria-hidden="true">▶</span></button>
+    <button type="button" class="reset" aria-label="Вернуть в начало"><span aria-hidden="true">↺</span></button>
+    <input class="timeline" type="range" min="0" max="1000" step="1" value="0" aria-label="Ход анимации">
+    <output class="phase" aria-hidden="true"></output></div>` : "";
+  return `<div class="scene">
+    <div class="scene-head"><span class="scene-label">${name}</span><span class="scene-tag">${tag}</span></div>
+    <canvas role="img" aria-label="${accessibleName}"></canvas>
+    ${energy ? `<div class="energy-panel">
+      <div class="energy-bar" aria-hidden="true"><span></span><span></span></div>
+      <div class="energy-legend"><span><b>E<sub>к</sub></b> <strong></strong></span><span><b>E<sub>п</sub></b> <strong></strong></span><span><b>E</b> <strong></strong></span></div>
+    </div>` : ""}
+    ${sliders}
+  </div>`;
+};
+
+function brush(canvas, width, height) {
+  const context = canvas.getContext("2d");
+  const pixelRatio = Math.min(devicePixelRatio || 1, 2);
+  if (canvas.width !== Math.round(width * pixelRatio) || canvas.height !== Math.round(height * pixelRatio)) {
+    canvas.width = Math.round(width * pixelRatio);
+    canvas.height = Math.round(height * pixelRatio);
+  }
+  context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+  const light = context.createRadialGradient(width * .52, height * .55, 8, width * .52, height * .55, Math.max(width,height) * .6);
+  light.addColorStop(0, "#263c53");
+  light.addColorStop(1, palette.navy);
+  context.fillStyle = light;
+  context.fillRect(0, 0, width, height);
+  context.beginPath();
+  for (let x = width % 24 / 2; x < width; x += 24) { context.moveTo(x,0); context.lineTo(x,height); }
+  for (let y = height % 24 / 2; y < height; y += 24) { context.moveTo(0,y); context.lineTo(width,y); }
+  context.strokeStyle = "#394e64";
+  context.lineWidth = .55;
+  context.stroke();
+  const scale = Math.min(width / 500, height / 250);
+  context.translate((width - 500 * scale) / 2, (height - 250 * scale) / 2);
+  context.scale(scale, scale);
+  return context;
+}
+
+function line(ctx, points, color = palette.dim, width = 1, dash = []) {
+  ctx.beginPath();
+  ctx.moveTo(...points[0]);
+  for (const point of points.slice(1)) ctx.lineTo(...point);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.setLineDash(dash);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function label(ctx, value, x, y, color = palette.pale, align = "left", size = 14) {
+  ctx.font = `${size}px "SFMono-Regular", Consolas, monospace`;
+  ctx.textAlign = align;
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = color;
+  ctx.fillText(value, x, y);
+}
+
+function dot(ctx, x, y, r, color, stroke) {
+  ctx.beginPath();
+  ctx.arc(x, y, r, 0, tau);
+  ctx.fillStyle = color;
+  ctx.fill();
+  if (stroke) { ctx.strokeStyle = stroke; ctx.lineWidth = 1; ctx.stroke(); }
+}
+
+function orb(ctx, x, y, r) {
+  const glow = ctx.createRadialGradient(x,y,r*.5,x,y,r*2.3);
+  glow.addColorStop(0,"#e5b87053");
+  glow.addColorStop(1,"#e5b87000");
+  dot(ctx,x,y,r*2.3,glow);
+  const fill = ctx.createRadialGradient(x-r*.32,y-r*.43,1,x,y,r*1.06);
+  fill.addColorStop(0,"#fff0c0");
+  fill.addColorStop(.42,"#e6c187");
+  fill.addColorStop(1,"#97704a");
+  dot(ctx,x,y,r,fill,"#f6d99f");
+}
+
+function arrow(ctx, from, to, color = palette.blue) {
+  const angle = Math.atan2(to[1] - from[1], to[0] - from[0]);
+  const back = offset => [to[0] - 7*Math.cos(angle+offset), to[1] - 7*Math.sin(angle+offset)];
+  line(ctx,[from,to],color,1.5);
+  line(ctx,[back(-.5),to,back(.5)],color,1.5);
+}
+
+function spring(ctx, x1, x2, y, amplitude = 15, color = palette.cream) {
+  const points = [[x1,y],[x1+12,y]];
+  for (let i = 0; i < 15; i++) points.push([x1+18+(x2-x1-36)*i/14, y+(i%2 ? -amplitude : amplitude)]);
+  points.push([x2-12,y],[x2,y]);
+  line(ctx,points,color,2);
+}
+
+function pendulumPath(angle, length) {
+  // The exact period comes from the complete elliptic integral K, evaluated by AGM.
+  let a = 1, b = Math.cos(angle/2);
+  for (let i = 0; i < 6; i++) [a,b] = [(a+b)/2, Math.sqrt(a*b)];
+  const period = tau / a * Math.sqrt(length / 10);
+  const dt = period / 720;
+  const gravity = -10 / length;
+  let theta = -angle, omega = 0;
+  const points = [theta];
+  for (let i = 0; i < 720; i++) {
+    const a1 = gravity * Math.sin(theta);
+    const o2 = omega + dt*a1/2;
+    const a2 = gravity * Math.sin(theta + dt*omega/2);
+    const o3 = omega + dt*a2/2;
+    const a3 = gravity * Math.sin(theta + dt*o2/2);
+    const o4 = omega + dt*a3;
+    const a4 = gravity * Math.sin(theta + dt*o3);
+    theta += dt*(omega + 2*o2 + 2*o3 + o4)/6;
+    omega += dt*(a1 + 2*a2 + 2*a3 + a4)/6;
+    points.push(theta);
+  }
+  return {period, thetaAt(phase) {
+    const index = Math.min(719, Math.floor(phase * 720));
+    return points[index] + (points[index+1] - points[index]) * (phase * 720 - index);
+  }};
+}
+
+function pendulum(ctx, phase, params) {
+  const theta = params.path.thetaAt(phase);
+  const angle = params.angle * Math.PI / 180;
+  const pivot = [250,35], length = 166;
+  const point = value => [pivot[0]+Math.sin(value)*length,pivot[1]+Math.cos(value)*length];
+  const bob = point(theta), left = point(-angle), right = point(angle), bottom = point(0);
+  const extreme = Math.max(angle, .88);
+  const arc = Array.from({length:65}, (_, i) => point(-extreme + 2 * extreme * i/64));
+  line(ctx,[[56,bottom[1]],[444,bottom[1]]],palette.dim,1,[4,7]);
+  line(ctx,[pivot,bottom],palette.dim,1,[4,7]);
+  line(ctx,[left,right],palette.grid,1,[4,5]);
+  line(ctx,arc,palette.blue,1.3,[4,5]);
+  dot(ctx,...left,4,palette.navy,palette.blue);
+  dot(ctx,...right,4,palette.navy,palette.blue);
+  dot(ctx,...bottom,4,palette.navy,palette.blue);
+  line(ctx,[[228,25],[272,25]],palette.blue,2);
+  for (let i=231;i<272;i+=8) line(ctx,[[i,24],[i+6,17]],palette.dim);
+  line(ctx,[[250,25],pivot],palette.blue,2);
+  line(ctx,[pivot,bob],palette.cream,2);
+  dot(ctx,...pivot,5,palette.gold);
+  orb(ctx,...bob,15);
+  const height = params.length * (1-Math.cos(theta));
+  const total = params.mass*10*params.length*(1-Math.cos(angle));
+  const potential = clamp(params.mass*10*height,0,total);
+  const kinetic = total-potential;
+  const velocity = Math.sqrt(2*kinetic/params.mass);
+  if (velocity > .14) {
+    const sign = phase < .5 ? 1 : -1;
+    const tangent = [Math.cos(theta)*sign,-Math.sin(theta)*sign];
+    const start = [bob[0]+tangent[0]*20,bob[1]+tangent[1]*20];
+    const tip = [start[0]+tangent[0]*Math.min(56, velocity*23), start[1]+tangent[1]*Math.min(56, velocity*23)];
+    arrow(ctx,start,tip);
+    label(ctx,"v",tip[0]+tangent[0]*12,tip[1]+8,palette.blue,"center",16);
+  }
+  label(ctx,"h = 0",58,bottom[1]+18,palette.blue);
+  label(ctx,"Нижняя точка",250,228,palette.pale,"center");
+  label(ctx,"Eₚ макс.",left[0]-10,left[1]-22,palette.gold,"right");
+  label(ctx,"Eₚ макс.",right[0]+10,right[1]-22,palette.gold);
+  return {kinetic, potential, total, height, velocity};
+}
+
+function incline(ctx, phase, params) {
+  const height = params.height;
+  const start = [94,181-height*31], bottom = [409,181];
+  const distanceFraction = phase*phase;
+  const point = [start[0]+(bottom[0]-start[0])*distanceFraction,start[1]+(bottom[1]-start[1])*distanceFraction];
+  ctx.beginPath();
+  ctx.moveTo(...start); ctx.lineTo(...bottom); ctx.lineTo(start[0],bottom[1]); ctx.closePath();
+  ctx.fillStyle = "#a7c0d519"; ctx.fill();
+  line(ctx,[start,bottom],palette.cream,2);
+  line(ctx,[[65,bottom[1]],[443,bottom[1]]],palette.dim,1,[5,6]);
+  line(ctx,[[72,start[1]],[72,bottom[1]]],palette.blue,1,[4,5]);
+  label(ctx,`${format(height)} м`,64,(start[1]+bottom[1])/2,palette.blue,"right");
+  label(ctx,"h = 0",439,202,palette.blue,"right");
+  const x = point[0], y = point[1]-13;
+  orb(ctx,x,y,12);
+  if (phase > .04) {
+    const dy = (bottom[1]-start[1])/(bottom[0]-start[0]);
+    arrow(ctx,[x+18,y-8],[x+18+phase*44,y-8+phase*44*dy]);
+  }
+  const potential = params.mass*10*height*(1-distanceFraction);
+  const total = params.mass*10*height;
+  const kinetic = total-potential;
+  return {potential, total, kinetic,height:height*(1-distanceFraction),velocity:Math.sqrt(2*kinetic/params.mass)};
+}
+
+function oscillator(ctx, phase, params) {
+  const angle = tau * phase;
+  const position = -params.compression * Math.cos(angle);
+  const x = 257 + position*240;
+  line(ctx,[[60,65],[60,172]],palette.blue,2);
+  for(let y=69;y<174;y+=11) line(ctx,[[48,y+6],[60,y-5]],palette.dim);
+  line(ctx,[[56,163],[447,163]],palette.blue,1.4);
+  line(ctx,[[257,58],[257,175]],palette.dim,1,[5,5]);
+  label(ctx,"x = 0",257,194,palette.blue,"center");
+  spring(ctx,60,x-18,134,14);
+  orb(ctx,x,134,16);
+  const velocity = params.compression*Math.sqrt(50/params.mass)*Math.sin(angle);
+  if (Math.abs(velocity) > .1) {
+    arrow(ctx,[x,102],[x+Math.sign(velocity)*Math.min(56, Math.abs(velocity)*20),102]);
+    label(ctx,"v",x+Math.sign(velocity)*22,89,palette.blue,"center",16);
+  }
+  const total = 25*params.compression**2;
+  const potential = 25*position**2;
+  return {potential,total,kinetic:total-potential, position, velocity:Math.abs(velocity)};
+}
+
+class Player {
+  constructor(root, draw, {duration = 3500, loop = false, initial = 0, update} = {}) {
+    this.root = root;
+    this.canvas = $("canvas",root);
+    this.draw = draw;
+    this.phase = initial;
+    this.duration = duration;
+    this.loop = loop;
+    this.update = update;
+    this.timeline = $(".timeline",root);
+    this.playButton = $(".play",root);
+    this.measured = $$(".energy-legend strong",root);
+    this.bars = $$(".energy-bar span",root);
+    if (this.playButton) {
+      this.playButton.addEventListener("click", () => this.running ? this.pause() : this.play());
+      $(".reset",root).addEventListener("click", () => { this.pause(); this.set(0); });
+      this.timeline.addEventListener("input", () => { this.pause(); this.set(Number(this.timeline.value)/1000); });
+    }
+    this.resizeObserver = new ResizeObserver(() => this.render());
+    this.resizeObserver.observe(this.canvas);
+    this.render();
+  }
+  set(value) { this.phase = clamp(value); this.render(); }
+  render() {
+    const {width,height} = this.canvas.getBoundingClientRect();
+    if (!width || !height) return;
+    const state = this.draw(brush(this.canvas,width,height),this.phase);
+    if (this.timeline) {
+      this.timeline.value = Math.round(this.phase*1000);
+      const progress = `${Math.round(this.phase*100)}%`;
+      this.timeline.setAttribute("aria-valuetext",progress);
+      $(".phase",this.root).textContent = progress;
+    }
+    if (this.measured.length && state) {
+      [state.kinetic,state.potential,state.total].forEach((value,index) => {
+        this.measured[index].textContent = `${format(value)} Дж`;
+      });
+      this.bars[0].style.width = `${state.kinetic/state.total*100}%`;
+      this.bars[1].style.width = `${state.potential/state.total*100}%`;
+    }
+    this.update?.(state);
+  }
+  play() {
+    if (this.phase >= 1) this.set(0);
+    this.animate(this.phase,1,this.duration*(1-this.phase),this.loop);
+  }
+  animate(from,to,duration=680,repeat=false) {
+    this.pause();
+    this.set(from);
+    if (from === to || duration < 10) { this.set(to); return; }
+    const now = performance.now();
+    this.running = true;
+    this.setPlaybackLabel();
+    const tick = time => {
+      const progress = clamp((time-now)/duration);
+      this.set(from + (to-from)*progress);
+      if (progress < 1) this.frame = requestAnimationFrame(tick);
+      else if (repeat) { this.set(0); this.play(); }
+      else this.pause();
+    };
+    this.frame = requestAnimationFrame(tick);
+  }
+  pause() {
+    cancelAnimationFrame(this.frame);
+    this.running = false;
+    this.setPlaybackLabel();
+  }
+  setPlaybackLabel() {
+    if (!this.playButton) return;
+    this.playButton.setAttribute("aria-label",this.running ? "Приостановить анимацию" : "Запустить анимацию");
+    $("span",this.playButton).textContent = this.running ? "Ⅱ" : "▶";
+  }
+  destroy() { this.pause(); this.resizeObserver.disconnect(); }
+}
+
+function orbit(ctx, phase, data) {
+  const center = [250,127];
+  const radius = [197,80];
+  const angle = -2.42 + phase * tau;
+  const position = [center[0]+radius[0]*Math.cos(angle),center[1]+radius[1]*Math.sin(angle)];
+  ctx.beginPath();
+  ctx.ellipse(...center,...radius,0,0,tau);
+  ctx.strokeStyle = palette.blue;
+  ctx.setLineDash([4,5]);ctx.stroke();ctx.setLineDash([]);
+  const earth = ctx.createRadialGradient(231,103,3,250,127,52);
+  earth.addColorStop(0,"#9abece");earth.addColorStop(.55,"#557f9e");earth.addColorStop(1,"#263e5c");
+  dot(ctx,...center,48,earth,"#a7c0d5");
+  ctx.save();
+  ctx.clip();
+  ctx.fillStyle="#aab8a9bd";
+  ctx.beginPath();
+  const land = [[209,110],[219,99],[229,102],[238,91],[251,97],[250,110],[235,118],[240,127],[234,139],[224,131],[223,118]];
+  ctx.moveTo(...land[0]);
+  land.slice(1).forEach(point=>ctx.lineTo(...point));
+  ctx.fill();
+  ctx.beginPath();
+  const east = [[267,99],[282,94],[295,111],[291,128],[275,124],[270,140],[260,149],[250,125],[259,119],[252,110]];
+  ctx.moveTo(...east[0]);east.slice(1).forEach(point=>ctx.lineTo(...point));ctx.fill();
+  ctx.restore();
+  ctx.save();
+  ctx.translate(...position);
+  ctx.rotate(Math.atan2(radius[1]*Math.cos(angle),-radius[0]*Math.sin(angle)));
+  ctx.fillStyle = "#8eafcc";
+  ctx.fillRect(-12,-29,24,15);ctx.fillRect(-12,14,24,15);
+  line(ctx,[[0,-29],[0,29]],palette.cream);
+  ctx.fillStyle=palette.gold;
+  ctx.fillRect(-10,-12,20,24);
+  ctx.strokeStyle=palette.cream;
+  ctx.strokeRect(-10,-12,20,24);
+  ctx.restore();
+  const tangent = [-radius[0]*Math.sin(angle),radius[1]*Math.cos(angle)];
+  const norm = Math.hypot(...tangent);
+  const vector = tangent.map(value=>value/norm);
+  arrow(ctx,[position[0]+22*vector[0],position[1]+22*vector[1]],[position[0]+55*vector[0],position[1]+55*vector[1]],palette.gold);
+  label(ctx,`v = ${format(data.speed/1000)} км/с`,250,230,palette.pale,"center");
+}
+
+function falling(ctx, phase, data) {
+  const start = [246,53], end = [246,202];
+  const v = data.v1 + (data.v2-data.v1)*phase;
+  const distance = (v*v-data.v1**2)/(data.v2**2-data.v1**2);
+  const y = start[1]+(end[1]-start[1])*distance;
+  line(ctx,[start,end],palette.blue,1.4,[4,5]);
+  line(ctx,[[140,start[1]],[350,start[1]]],palette.dim,1,[4,6]);
+  line(ctx,[[140,end[1]],[350,end[1]]],palette.dim,1,[4,6]);
+  dot(ctx,...start,4,palette.navy,palette.blue);
+  dot(ctx,...end,4,palette.navy,palette.blue);
+  label(ctx,`v₁ = ${data.v1} м/с`,134,start[1],palette.pale,"right");
+  label(ctx,`v₂ = ${data.v2} м/с`,134,end[1],palette.pale,"right");
+  arrow(ctx,[306,y-22],[306,Math.min(y+28,229)],palette.blue);
+  label(ctx,"mg",318,y+4,palette.blue);
+  orb(ctx,246,y,15);
+  label(ctx,`v = ${format(v,1)} м/с`,365,127,palette.gold);
+}
+
+function projectilePeak(data) {
+  return Math.sqrt(data.peak)/(Math.sqrt(data.peak)+Math.sqrt(data.peak-data.finish));
+}
+
+function projectile(ctx, phase, data) {
+  const start = [68,213], end = [402,213];
+  const top = 41;
+  const peak = projectilePeak(data);
+  const point = p => [start[0]+(end[0]-start[0])*p,top+(start[1]-top)*(p/peak-1)**2];
+  const finish = point(1), apex = point(peak);
+  const track = Array.from({length:65},(_,i)=>point(i/64));
+  const p = point(phase);
+  ctx.fillStyle="#94afc42e";
+  ctx.fillRect(finish[0],finish[1],75,213-finish[1]);
+  line(ctx,[[55,213],[477,213]],palette.dim,1.25);
+  line(ctx,[[62,apex[1]],[apex[0],apex[1]]],palette.dim,1,[4,5]);
+  line(ctx,[[62,finish[1]],finish],palette.dim,1,[4,5]);
+  line(ctx,[finish,[477,finish[1]]],palette.cream,2);
+  line(ctx,track,palette.blue,1.6,[5,6]);
+  for (const anchor of [start,apex,finish]) dot(ctx,...anchor,4,palette.navy,palette.blue);
+  label(ctx,`${data.peak} м`,55,apex[1],palette.blue,"right");
+  label(ctx,`${data.finish} м`,55,finish[1],palette.blue,"right");
+  label(ctx,"0 м",55,213,palette.blue,"right");
+  label(ctx,data.platform ?? "балкон",476,finish[1]+17,palette.pale,"right");
+  orb(ctx,...p,10);
+}
+
+function forceGraph(ctx, phase, data) {
+  const origin = [99,210], size = [306,165];
+  const position = [origin[0]+size[0]*phase,origin[1]-size[1]*phase];
+  for(let i = 1; i <= 10; i++) {
+    const x = origin[0]+size[0]*i/10, y = origin[1]-size[1]*i/10;
+    line(ctx,[[x,origin[1]],[x,origin[1]-size[1]]],palette.grid);
+    line(ctx,[[origin[0],y],[origin[0]+size[0],y]],palette.grid);
+  }
+  ctx.beginPath();ctx.moveTo(...origin);ctx.lineTo(...position);ctx.lineTo(position[0],origin[1]);ctx.closePath();
+  ctx.fillStyle="#dfbd804d";ctx.fill();
+  arrow(ctx,origin,[size[0]+origin[0]+23,origin[1]],palette.blue);
+  arrow(ctx,origin,[origin[0],origin[1]-size[1]-19],palette.blue);
+  line(ctx,[origin,[origin[0]+size[0],origin[1]-size[1]]],palette.cream,1.8);
+  line(ctx,[position,[position[0],origin[1]]],palette.gold,1.3,[4,4]);
+  line(ctx,[position,[origin[0],position[1]]],palette.gold,1.25,[4,4]);
+  dot(ctx,...position,5,palette.gold,palette.cream);
+  label(ctx,"F, Н",95,18,palette.blue,"right");
+  label(ctx,"x, см",432,229,palette.blue);
+  label(ctx,"0",87,228,palette.pale,"right");
+  ctx.beginPath();
+  ctx.arc(...origin,30,-Math.atan2(size[1],size[0]),0);
+  ctx.strokeStyle=palette.blue;
+  ctx.lineWidth=1.1;
+  ctx.stroke();
+  label(ctx,"α",140,199,palette.blue,"center",15);
+  const mid = data.refX/10;
+  const refPosition = [origin[0]+size[0]*mid,origin[1]-size[1]*mid];
+  dot(ctx,...refPosition,3,palette.cream);
+  label(ctx,String(data.refX),refPosition[0],229,palette.pale,"center");
+  label(ctx,format(data.refF,0),85,refPosition[1],palette.pale,"right");
+  label(ctx,"10",405,229,palette.pale,"center");
+  label(ctx,"A",415,39,palette.cream,"left",16);
+  if (phase > .03) label(ctx,`x = ${format(10*phase,1)} см`,445,16,palette.gold,"right");
+}
+
+const problemTypes = [
+  {short:"Орбита",model:"Равномерное движение по орбите",draw:orbit,initial:.1,caption:"Скорость направлена по касательной к орбите. На круговой орбите её модуль постоянен."},
+  {short:"Падение",model:"Свободное падение",draw:falling,initial:0,caption:"Стрелка показывает силу тяжести, которая разгоняет тело вниз."},
+  {short:"Бросок",model:"Траектория броска",draw:projectile,initial:0,caption:"Пунктиром отмечены верхняя точка траектории и высота балкона."},
+  {short:"Пружина",model:"График силы F(x)",draw:forceGraph,initial:0,caption:"Ось x показывает удлинение. Ось F показывает приложенную растягивающую силу."}
+];
+
+const worked = [
+  {
+    number:"342 (340)", page:"50", title:"Корабль на орбите",
+    question:"Корабль «Союз» массой 6,6 т движется по орбите со скоростью 7,8 км/с. Найди его кинетическую энергию.",
+    givens:["m = 6,6 т","v = 7,8 км/с"], data:{speed:7800},
+    steps:[
+      [.14,"Переводим в СИ","Для расчёта берём массу в килограммах и скорость в метрах в секунду.","m = 6 600 кг, v = 7 800 м/с","Скорость в формуле — относительно Земли."],
+      [.38,"Выбираем формулу","Ищем энергию движения тела известной массы.","E<sub>к</sub> = mv² / 2","Вектор скорости поворачивается по орбите. Его длина на схеме постоянна."],
+      [.62,"Подставляем значения","Возводим скорость в квадрат и умножаем на половину массы.","E<sub>к</sub> = 6 600 · 7 800² / 2 = 200 772 000 000 Дж","Кинетическая энергия одинакова в каждой точке круговой орбиты."],
+      [.9,"Ответ","В научной записи округляем результат до двух значащих цифр.","E<sub>к</sub> ≈ 2,0 · 10¹¹ Дж","Большой вклад даёт квадрат орбитальной скорости."]
+    ]
+  },
+  {
+    number:"343 (341)",page:"50",title:"Работа при падении",
+    question:"Скорость свободно падающего тела массой 4 кг увеличилась с 2 до 8 м/с. Найди работу силы тяжести на этом участке.",
+    givens:["m = 4 кг","v₁ = 2 м/с","v₂ = 8 м/с"], data:{v1:2,v2:8},
+    steps:[
+      [0,"Отмечаем начальное состояние","На верхней отметке тело уже движется вниз. Его начальная кинетическая энергия больше нуля.","E<sub>к1</sub> = 4 · 2² / 2 = 8 Дж","Верхняя отметка — начало рассматриваемого участка."],
+      [1,"Находим энергию в конце участка","Скорость на нижней отметке равна 8 м/с.","E<sub>к2</sub> = 4 · 8² / 2 = 128 Дж","При свободном падении скорость увеличивается."],
+      [1,"Применяем теорему об изменении энергии","При свободном падении работу совершает сила тяжести. Её работа равна приросту кинетической энергии.","A<sub>тяж</sub> = E<sub>к2</sub> − E<sub>к1</sub>","Сила и перемещение направлены вниз."],
+      [1,"Ответ","Вычитаем начальную энергию из конечной. Работа положительна.","A<sub>тяж</sub> = 128 − 8 = 120 Дж","На 120 Дж выросла кинетическая энергия тела."]
+    ]
+  },
+  {
+    number:"349 (347)",page:"50–51",title:"Бросок на балкон",
+    question:"Предмет массой 200 г бросили с земли на балкон высотой 6 м. Наибольшая высота полёта — 8 м. Найди работу силы тяжести при подъёме, спуске и за весь полёт, а также изменение потенциальной энергии.",
+    givens:["m = 0,20 кг","hмакс = 8 м","hбалк = 6 м","g ≈ 10 м/с²"],data:{peak:8,finish:6},
+    steps:[
+      [0,"Выбираем нулевой уровень","На земле принимаем h₁ = 0. Для каждого участка работа тяжести равна минус изменению потенциальной энергии.","A<sub>тяж</sub> = mg(h<sub>1</sub> − h<sub>2</sub>)","Начальная точка — поверхность земли."],
+      [projectilePeak({peak:8,finish:6}),"Движение вверх","Предмет поднимается на 8 м. Сила тяжести направлена вниз, поэтому работа отрицательна.","A<sub>вверх</sub> = 0,20 · 10 · (0 − 8) = −16 Дж","В верхней точке потенциальная энергия максимальна."],
+      [1,"Движение вниз","Предмет опускается с 8 м до 6 м. Работа тяжести положительна.","A<sub>вниз</sub> = 0,20 · 10 · (8 − 6) = +4 Дж","До балкона предмет опустился на 2 м."],
+      [1,"Ответ за весь полёт","Складываем работы. Изменение потенциальной энергии получается с противоположным знаком.","A<sub>весь</sub> = −16 + 4 = −12 Дж<br>ΔE<sub>п</sub> = +12 Дж","Для полной работы важна разность конечной и начальной высот."]
+    ]
+  },
+  {
+    number:"351 (349)",page:"51, рис. 46",title:"Энергия по графику",
+    question:"По графику силы, растягивающей пружину, определи её потенциальную энергию при удлинении 8 см. Объясни смысл наклона прямой и площади треугольника под участком OA.",
+    givens:["x = 8 см","по графику F(5 см) = 500 Н"],data:{refX:5,refF:500},
+    steps:[
+      [.5,"Находим жёсткость","В области закона Гука F = kx. Наклон ΔF/Δx даёт жёсткость k. Геометрический tan α переводим в Н/м по масштабам осей.","k = 500 Н / 0,05 м = 10 000 Н/м","Отмеченная точка на прямой соответствует 5 см и 500 Н."],
+      [.8,"Находим силу при 8 см","Переводим удлинение в метры и умножаем на жёсткость.","F(0,08 м) = 10 000 · 0,08 = 800 Н","Под прямой заштрихована область от 0 до 8 см."],
+      [.8,"Вычисляем энергию","Площадь под графиком F(x) — работа при медленном растяжении. Она равна приросту потенциальной энергии пружины.","E<sub>п</sub> = Fx / 2 = 800 · 0,08 / 2 = 32 Дж","Площадь треугольника в Н·м равна 32 Дж."],
+      [1,"Что означает площадь под всем OA","В точке A удлинение 10 см и сила 1 000 Н. Полный треугольник показывает работу растяжения от 0 до 10 см.","A<sub>0→A</sub> = 1 000 · 0,10 / 2 = 50 Дж","При 8 см энергия 32 Дж. При 10 см — 50 Дж."]
+    ]
+  }
+];
+
+const practice = [
+  {
+    title:"Спутник Земли", question:"Масса спутника составляет 1,2 т. Скорость относительно Земли равна 7,5 км/с. Найди кинетическую энергию спутника.",
+    givens:["m = 1,2 т","v = 7,5 км/с"],data:{speed:7500},
+    steps:[
+      [.14,"Переводим в СИ","Выражаем массу в килограммах, скорость — в метрах в секунду.","m = 1 200 кг, v = 7 500 м/с","Показано движение спутника по условной круговой орбите."],
+      [.48,"Подставляем в формулу","Возводим скорость в квадрат и умножаем на половину массы.","E<sub>к</sub> = mv² / 2 = 1 200 · 7 500² / 2","Стрелка скорости направлена по касательной."],
+      [.79,"Ответ","Порядок величины — десятки миллиардов джоулей.","E<sub>к</sub> = 33 750 000 000 Дж ≈ 3,4 · 10¹⁰ Дж","При одинаковой скорости энергия остаётся одинаковой вдоль орбиты."]
+    ]
+  },
+  {
+    title:"Падающий груз",question:"Груз массой 3 кг свободно падает. На рассматриваемом участке его скорость увеличилась с 4 до 10 м/с. Какую работу совершила сила тяжести?",
+    givens:["m = 3 кг","v₁ = 4 м/с","v₂ = 10 м/с"],data:{v1:4,v2:10},
+    steps:[
+      [0,"Начальная энергия","На первом уровне груз уже имеет скорость 4 м/с.","E<sub>к1</sub> = 3 · 4² / 2 = 24 Дж","Начало рассматриваемого участка."],
+      [1,"Конечная энергия","На втором уровне скорость груза равна 10 м/с.","E<sub>к2</sub> = 3 · 10² / 2 = 150 Дж","Груз прибавил в скорости при падении."],
+      [1,"Ответ","Сила тяжести — единственная сила, совершающая работу при свободном падении.","A<sub>тяж</sub> = E<sub>к2</sub> − E<sub>к1</sub> = 126 Дж","Работа положительна, потому что кинетическая энергия выросла."]
+    ]
+  },
+  {
+    title:"Мяч на террасе",question:"Мяч массой 300 г бросили с земли на террасу высотой 4 м. Мяч поднялся до 10 м. Найди работу тяжести при подъёме, при спуске и за весь полёт. Как изменилась потенциальная энергия мяча?",
+    givens:["m = 0,30 кг","hмакс = 10 м","hтерр = 4 м","g ≈ 10 м/с²"],data:{peak:10,finish:4,platform:"терраса"},
+    steps:[
+      [0,"Выбираем уровень отсчёта","Принимаем потенциальную энергию на земле за ноль. Работа тяжести зависит от изменения высоты.","A<sub>тяж</sub> = mg(h<sub>1</sub> − h<sub>2</sub>)","Начальная точка — поверхность земли."],
+      [projectilePeak({peak:10,finish:4}),"От земли до вершины","Мяч поднялся на 10 м. Сила тяжести направлена вниз.","A<sub>вверх</sub> = 0,30 · 10 · (0 − 10) = −30 Дж","Вершина траектории находится на высоте 10 м."],
+      [1,"От вершины до террасы","При снижении на 6 м работа силы тяжести положительна.","A<sub>вниз</sub> = 0,30 · 10 · (10 − 4) = +18 Дж","Мяч оказывается на террасе высотой 4 м."],
+      [1,"Ответ за весь полёт","Суммируем работы. Потенциальная энергия выросла на столько, на сколько работа тяжести отрицательна.","A<sub>весь</sub> = −30 + 18 = −12 Дж<br>ΔE<sub>п</sub> = +12 Дж","Терраса выше нулевого уровня на 4 м."]
+    ]
+  },
+  {
+    title:"Растянутая пружина",question:"График растягивающей силы проходит через начало координат и точку (6 см; 360 Н). Найди жёсткость, энергию при удлинении 8 см и работу растяжения от 0 до 10 см.",
+    givens:["F(6 см) = 360 Н","x₁ = 8 см","x₂ = 10 см"],data:{refX:6,refF:360},
+    steps:[
+      [.6,"Считываем наклон","Жёсткость — отношение изменения силы к изменению удлинения.","k = 360 / 0,06 = 6 000 Н/м","Опорная точка соответствует 6 см и 360 Н."],
+      [.8,"Площадь до 8 см","Потенциальная энергия при растяжении равна работе от нулевого удлинения до 8 см.","E<sub>п</sub> = kx² / 2 = 6 000 · 0,08² / 2 = 19,2 Дж","Для энергии при 8 см берём площадь треугольника до этой отметки."],
+      [1,"Площадь до 10 см","В конце графика F = 6 000 · 0,10 = 600 Н. Умножаем основание треугольника на высоту и делим пополам.","A = 0,10 · 600 / 2 = 30 Дж","Площадь под всем отрезком OA равна 30 Дж."]
+    ]
+  }
+];
+
+const models = [
+  {
+    title:"Маятник",measure:"Высота",unit:"м",property:"height",key:"angle",label:"Угол отклонения",suffix:"°",
+    range:{min:20,max:60,step:1,value:52}, draw:pendulum, loop:true,
+    text:"Отпусти груз. В крайних точках его скорость равна нулю, а потенциальная энергия максимальна. В нижней точке всё наоборот.",
+    tip:"Модель учитывает движение по дуге при любом выбранном угле. Сопротивление воздуха и трение в подвесе не учитываются."
+  },
+  {
+    title:"Наклонная плоскость",measure:"Высота",unit:"м",property:"height",key:"height",label:"Высота старта, м",suffix:" м",
+    range:{min:1,max:4,step:.1,value:3}, draw:incline,loop:false,
+    text:"Тело начинает скользить из состояния покоя. Чем выше точка старта, тем больше скорость внизу.",
+    tip:"На гладком склоне реакция опоры перпендикулярна движению и не совершает работу. Показано скольжение без вращения."
+  },
+  {
+    title:"Груз на пружине",measure:"Смещение",unit:"м",property:"position",key:"compression",label:"Начальное сжатие, м",suffix:" м",
+    range:{min:.1,max:.45,step:.01,value:.3}, draw:oscillator,loop:true,
+    text:"Груз стартует у сжатой пружины. В положении равновесия энергия пружины равна нулю, а скорость груза максимальна.",
+    tip:"Пружина идеальная, жёсткость k = 50 Н/м. При удвоении начального сжатия полная механическая энергия растёт в четыре раза."
+  }
+];
+
+const timelineLabel = `<span class="sr-only">Энергии указаны в джоулях.</span>`;
+const heroRoot = $("#hero-scene");
+heroRoot.innerHTML = sceneTemplate("Маятник", "Идеальная модель", "Груз на нити движется по дуге. Отмечены крайние положения и нижняя точка.", {energy:true}) + timelineLabel;
+const heroParams = {angle:52,length:1,mass:1,path:pendulumPath(52*Math.PI/180,1)};
+const hero = new Player(heroRoot,(ctx,phase)=>pendulum(ctx,phase,heroParams), {
+  duration:4900, loop:true, initial:.095
+});
+
+function switchButtons(container, entries, select) {
+  container.innerHTML = entries.map((text,index) => `<button type="button" aria-pressed="false" data-index="${index}">${text}</button>`).join("");
+  container.addEventListener("click",event => {
+    const button = event.target.closest("button[data-index]");
+    if (button) select(Number(button.dataset.index));
+  });
+  return index => $$("button",container).forEach((button,i) => button.setAttribute("aria-pressed",String(i===index)));
+}
+
+let labPlayer;
+const labState = models.map(model => ({[model.key]:model.range.value,mass:1,length:1}));
+const selectLabButton = switchButtons($("#lab-switch"),models.map(model=>model.title),selectLab);
+function selectLab(index) {
+  labPlayer?.destroy();
+  selectLabButton(index);
+  const model = models[index], state = labState[index];
+  const info = $("#lab-info"), root = $("#lab-scene");
+  const controls = (id, labelText, range, value) => `<label class="control-label" for="${id}">${labelText}<output for="${id}"></output></label>
+    <input type="range" id="${id}" min="${range.min}" max="${range.max}" step="${range.step}" value="${value}">`;
+  info.innerHTML = `<h2 class="exercise-title">${model.title}</h2><p>${model.text}</p>
+    ${controls("model-param",model.label,model.range,state[model.key])}
+    ${controls("model-mass","Масса, кг",{min:.5,max:3,step:.1},state.mass)}
+    <dl class="measurements"><div><dt>${model.measure}</dt><dd id="model-position"></dd></div><div><dt>Модуль скорости</dt><dd id="model-speed"></dd></div></dl>
+    <p class="lab-tip">${model.tip}</p>`;
+  root.innerHTML = sceneTemplate(model.title,index===2 ? "Без трения" : "g = 10 м/с²",model.text,{energy:true});
+  const param = $("#model-param",info), mass = $("#model-mass",info);
+  const position = $("#model-position",info), speed = $("#model-speed",info);
+  function applyParams() {
+    state[model.key] = Number(param.value);
+    state.mass = Number(mass.value);
+    if (index===0) state.path = pendulumPath(state.angle*Math.PI/180,state.length);
+    const rangeText = format(state[model.key]) + model.suffix;
+    const massText = format(state.mass) + " кг";
+    param.setAttribute("aria-valuetext",rangeText);
+    mass.setAttribute("aria-valuetext",massText);
+    $('output[for="model-param"]',info).textContent = rangeText;
+    $('output[for="model-mass"]',info).textContent = massText;
+    if (labPlayer) {
+      labPlayer.duration = duration();
+      labPlayer.render();
+    }
+  }
+  function duration() {
+    // Display models in slow motion to leave time to compare the readouts.
+    if (index===0) return 2100*state.path.period;
+    if (index===2) return 4300*tau*Math.sqrt(state.mass/50);
+    return 4200;
+  }
+  labPlayer = null;
+  applyParams();
+  labPlayer = new Player(root,(context,phase)=>model.draw(context,phase,state),{
+    loop:model.loop,duration:duration(),
+    update(result) {
+      position.textContent = `${format(result[model.property])} ${model.unit}`;
+      speed.textContent = `${format(result.velocity)} м/с`;
+    }
+  });
+  for (const input of [param,mass]) input.addEventListener("input",() => { labPlayer.pause(); applyParams(); });
+}
+
+function buildProblems(mode, problems) {
+  const container = $(`#${mode}-workspace`);
+  const selfStudy = mode==="practice";
+  container.innerHTML = `<div class="switcher problem-switch" role="group" aria-label="Выбор задачи"></div>
+    <div class="work-grid tasks-grid">
+      <article class="paper-card task-paper"></article><div class="task-scene"></div>
+    </div>
+    <p class="source"></p>`;
+  const article = $(".task-paper",container), root = $(".task-scene",container), source = $(".source",container);
+  let player;
+  const markSelected = switchButtons($(".problem-switch",container), problems.map((problem,index) => {
+    const number = selfStudy ? index+1 : problem.number.split(" ")[0];
+    return `<small>${selfStudy ? number : "№ " + number}</small> ${problemTypes[index].short}`;
+  }), selectProblem);
+  function selectProblem(index) {
+    markSelected(index);
+    player?.destroy();
+    const problem = problems[index], type = problemTypes[index];
+    const tag = selfStudy ? `Задача ${index+1} из 4` : `№ ${problem.number}`;
+    source.textContent = selfStudy ? `По образцу задачи № ${worked[index].number}` : `Присланный сборник, § 17, с. ${problem.page}.`;
+    const modelTitle = index===2 && selfStudy ? "Бросок на террасу" : type.model;
+    root.innerHTML = sceneTemplate(modelTitle,"Схема движения",modelTitle);
+    $(".scene-tag",root).textContent = index===3 ? "Растяжение пружины" : "Условный масштаб";
+    const caption = document.createElement("div");
+    caption.className = "problem-caption";
+    $(".scene",root).append(caption);
+    player = new Player(root,(context,phase)=>type.draw(context,phase,problem.data),{
+      initial:type.initial, duration:index===0 ? 5200 : 3200
+    });
+    const baseCaption = index===2 && selfStudy ? "Пунктиром отмечены верхняя точка траектории и высота террасы." : type.caption;
+    caption.textContent = baseCaption;
+    article.innerHTML = `<div class="task-intro"><p class="kicker">${tag}</p><h2 class="exercise-title">${problem.title}</h2>
+      <p>${problem.question}</p><div class="problem-data" aria-label="Дано">${problem.givens.map(value=>`<span>${value}</span>`).join("")}</div>
+      ${selfStudy ? `<div class="solution-actions"><button class="button primary see-solution" type="button" aria-expanded="false" aria-controls="solution-${mode}">Посмотреть решение <span aria-hidden="true">↓</span></button></div>` : ""}
+      </div><section class="solution" id="solution-${mode}" aria-label="Пошаговое решение"${selfStudy ? " hidden" : ""}>
+        <div class="step-tabs" role="group" aria-label="Шаги решения"></div>
+        <div class="step-card" aria-live="polite"></div>
+        <div class="step-actions"><button class="button light previous" type="button">← Назад</button>
+          <button class="button primary next" type="button">Следующий шаг →</button>
+          <button class="button light replay-step" type="button" hidden>↺ Повторить</button></div>
+      </section>`;
+    const solution = $(".solution",article), card = $(".step-card",article);
+    const back = $(".previous",article), next = $(".next",article), replay = $(".replay-step",article);
+    const markStep = switchButtons($(".step-tabs",article),problem.steps.map(([,title],i)=>`<span aria-hidden="true">${i+1}</span><span class="sr-only">Шаг ${i+1}. ${title}</span>`), selectStep);
+    let activeStep = 0;
+    function selectStep(step, animate = true) {
+      activeStep = step;
+      markStep(step);
+      const [phase,title,description,math,sceneCaption] = problem.steps[step];
+      card.innerHTML = `<h3>${title}</h3><p>${description}</p><div class="formula">${math}</div>`;
+      card.classList.remove("reveal");
+      if (animate && !reducedMotion.matches) {
+        void card.offsetWidth;
+        card.classList.add("reveal");
+      }
+      back.disabled = step===0;
+      next.hidden = step===problem.steps.length-1;
+      replay.hidden = !next.hidden;
+      caption.textContent = sceneCaption;
+      player.pause();
+      if (animate && !reducedMotion.matches) player.animate(player.phase,phase);
+      else player.set(phase);
+    }
+    back.addEventListener("click",() => selectStep(activeStep-1));
+    next.addEventListener("click",() => {
+      selectStep(activeStep+1);
+      if (next.hidden) replay.focus();
+    });
+    replay.addEventListener("click",() => {
+      selectStep(0);
+      next.focus();
+    });
+    if (selfStudy) {
+      const trigger = $(".see-solution",article);
+      trigger.addEventListener("click",() => {
+        const opening = solution.hidden;
+        solution.hidden = !opening;
+        trigger.setAttribute("aria-expanded",String(opening));
+        trigger.innerHTML = opening ? 'Скрыть решение <span aria-hidden="true">↑</span>' : 'Посмотреть решение <span aria-hidden="true">↓</span>';
+        if (opening) {
+          selectStep(0);
+          if (matchMedia("(max-width: 690px)").matches) {
+            root.scrollIntoView({block:"start",behavior:reducedMotion.matches ? "instant" : "smooth"});
+          }
+        } else {
+          card.replaceChildren();
+          player.pause();
+          player.set(type.initial);
+          caption.textContent = baseCaption;
+        }
+      });
+    } else selectStep(0,false);
+  }
+  selectProblem(0);
+  return {pause:() => player?.pause()};
+}
+
+const workedView = buildProblems("worked",worked);
+const practiceView = buildProblems("practice",practice);
+const pages = $$("#main > [data-page]");
+let current;
+function route() {
+  const target = location.hash.slice(1);
+  const page = target==="main" && current ? current : pages.some(section=>section.dataset.page===target) ? target : "theory";
+  if (page !== current) {
+    hero.pause(); labPlayer?.pause(); workedView.pause(); practiceView.pause();
+    for (const section of pages) section.hidden = section.dataset.page!==page;
+    for (const link of $$(".nav a")) {
+      if (link.hash==="#"+page) link.setAttribute("aria-current","page");
+      else link.removeAttribute("aria-current");
+    }
+    if (page==="theory" && !reducedMotion.matches) hero.play();
+    if (page==="lab" && !labPlayer) selectLab(0);
+    if (target!=="chapter" && target!=="main") window.scrollTo({top:0,behavior:"instant"});
+    current = page;
+  }
+  if (target==="chapter") $("#chapter").scrollIntoView();
+  if (target==="main") $("#main").focus();
+}
+window.addEventListener("hashchange",route);
+document.addEventListener("visibilitychange",() => {
+  if (document.hidden) { hero.pause(); labPlayer?.pause(); workedView.pause(); practiceView.pause(); }
+});
+if ("IntersectionObserver" in window) new IntersectionObserver(([entry])=>{
+  if (!entry.isIntersecting) hero.pause();
+}).observe(heroRoot);
+route();
+</script>
+</body>
+</html>
